@@ -6,55 +6,41 @@ using System.Threading.Tasks;
 
 namespace Calculator
 {
-    class Program:IMath
+    class Program
     {
-        delegate int Calculation(decimal a, decimal b, string c);
         static void Main(string[] args)
         {
-            Console.WriteLine("Simple Calculator");
-            Console.WriteLine("Please enter the first operand:");
-            var firstNumber=Console.ReadLine();
-            Console.WriteLine("Please enter the operator:");
-            var operators= Console.ReadLine();
-            var secondNumber = Console.ReadLine();
-            var makeResult = new FindReuslt(firstNumber, secondNumber, operators);
-
-
+            
+            while (true)
+            {
+                Dictionary<string, Func<int, int, int>> dic = GetReuslt();
+                Console.WriteLine("Please enter among \"+,-,*,/\"");
+                var selectedOperator = Console.ReadLine();
+                if (dic.ContainsKey(selectedOperator))
+                {
+                    var refFunc = dic[selectedOperator];
+                    int result = refFunc(GetInt(), GetInt());
+                    Console.WriteLine("Value after calculation:" + result);
+                }
+                else
+                    Console.WriteLine("Not valid operator entered!!");
+                Console.ReadLine();
+            }
         }
-
-        public int FindReuslt(double a, double b, string c)
+        static int GetInt()
         {
-
+            Console.WriteLine("Please enter an integer");
+            return int.Parse(Console.ReadLine());
         }
-
-        public void Addition(decimal a, decimal b)
+        
+        static Dictionary<string, Func<int, int, int>> GetReuslt()
         {
-
-            Console.WriteLine("The result is:" + (a + b));
-            throw new NotImplementedException();
+            return new Dictionary<string, Func<int, int, int>>{
+                {"+",(xa,yb)=>xa+yb },
+                {"-",(xa,xb)=>xa-xb},
+                {"/",(xa,xb)=>xa/xb},
+                {"*",(xa,xb)=>xa*xb}
+            };
         }
-
-        public void Division()
-        {
-            throw new NotImplementedException();
-        }
-
-        public void Multiplication()
-        {
-            throw new NotImplementedException();
-        }
-
-        public void Substraction()
-        {
-            throw new NotImplementedException();
-        }
-    }
-    
-    interface IMath
-    {
-        void Addition(decimal a, decimal b);
-        void Substraction();
-        void Multiplication();
-        void Division();
     }
 }
